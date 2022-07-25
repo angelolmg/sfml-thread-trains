@@ -35,26 +35,36 @@ float t3py = t1py + trailw;
 float t4px = t1px + trailw;
 float t4py = t1py + trailw;
 
+sf::Mutex mutex1;
+sf::Mutex mutex2;
+sf::Mutex mutex3;
+sf::Mutex mutex4;
+
 void func_T1(sf::RectangleShape *sprite)
 {
 
     while (1)
     {
+        sprite->setPosition(t1px - trailw / 2, t1py);
         usleep((100 - v_T1) / 100 * v_max);
         std::cout << "T1: Trilho 1" << std::endl;
-        sprite->setPosition(t1px - trailw / 2, t1py);
 
+        sprite->setPosition(t1px, t1py - trailw / 2);
         usleep((100 - v_T1) / 100 * v_max);
         std::cout << "T1: Trilho 2" << std::endl;
-        sprite->setPosition(t1px, t1py - trailw / 2);
 
+        mutex2.lock();
+
+        mutex1.lock();
+        sprite->setPosition(t1px + trailw / 2, t1py);
         usleep((100 - v_T1) / 100 * v_max);
         std::cout << "T1: Trilho 3" << std::endl;
-        sprite->setPosition(t1px + trailw / 2, t1py);
+        mutex1.unlock();
 
+        sprite->setPosition(t1px, t1py + trailw / 2);
         usleep((100 - v_T1) / 100 * v_max);
         std::cout << "T1: Trilho 4" << std::endl;
-        sprite->setPosition(t1px, t1py + trailw / 2);
+        mutex2.unlock();
     }
 }
 
@@ -62,21 +72,25 @@ void func_T2(sf::RectangleShape *sprite)
 {
     while (1)
     {
+        sprite->setPosition(t2px, t2py - trailw / 2);
         usleep((100 - v_T2) / 100 * v_max);
         std::cout << "T2: Trilho 5" << std::endl;
-        sprite->setPosition(t2px, t2py - trailw / 2);
 
+        sprite->setPosition(t2px + trailw / 2, t2py);
         usleep((100 - v_T2) / 100 * v_max);
         std::cout << "T2: Trilho 6" << std::endl;
-        sprite->setPosition(t2px + trailw / 2, t2py);
-
+        
+        mutex3.lock();
+        sprite->setPosition(t2px, t2py + trailw / 2);
         usleep((100 - v_T2) / 100 * v_max);
         std::cout << "T2: Trilho 7" << std::endl;
-        sprite->setPosition(t2px, t2py + trailw / 2);
+        mutex3.unlock();
 
+        mutex1.lock();
+        sprite->setPosition(t2px - trailw / 2, t2py);
         usleep((100 - v_T2) / 100 * v_max);
         std::cout << "T2: Trilho 3" << std::endl;
-        sprite->setPosition(t2px - trailw / 2, t2py);
+        mutex1.unlock();
     }
 }
 
@@ -84,21 +98,25 @@ void func_T3(sf::RectangleShape *sprite)
 {
     while (1)
     {
+        sprite->setPosition(t3px, t3py + trailw / 2);
         usleep((100 - v_T3) / 100 * v_max);
         std::cout << "T3: Trilho 10" << std::endl;
-        sprite->setPosition(t3px, t3py + trailw / 2);
 
+        sprite->setPosition(t3px - trailw / 2, t3py);
         usleep((100 - v_T3) / 100 * v_max);
         std::cout << "T3: Trilho 8" << std::endl;
-        sprite->setPosition(t3px - trailw / 2, t3py);
 
+        mutex2.lock();
+        sprite->setPosition(t3px, t3py - trailw / 2);
         usleep((100 - v_T3) / 100 * v_max);
         std::cout << "T3: Trilho 4" << std::endl;
-        sprite->setPosition(t3px, t3py - trailw / 2);
+        mutex2.unlock();
 
+        mutex4.lock();
+        sprite->setPosition(t3px + trailw / 2, t3py);
         usleep((100 - v_T3) / 100 * v_max);
         std::cout << "T3: Trilho 9" << std::endl;
-        sprite->setPosition(t3px + trailw / 2, t3py);
+        mutex4.unlock();
     }
 }
 
@@ -106,21 +124,27 @@ void func_T4(sf::RectangleShape *sprite)
 {
     while (1)
     {
+
+        sprite->setPosition(t4px + trailw / 2, t4py);
         usleep((100 - v_T4) / 100 * v_max);
         std::cout << "T4: Trilho 11" << std::endl;
-        sprite->setPosition(t4px + trailw / 2, t4py);
 
+        sprite->setPosition(t4px, t4py + trailw / 2);
         usleep((100 - v_T4) / 100 * v_max);
         std::cout << "T4: Trilho 12" << std::endl;
-        sprite->setPosition(t4px, t4py + trailw / 2);
-
+        
+        mutex3.lock();
+        
+        mutex4.lock();
+        sprite->setPosition(t4px - trailw / 2, t4py);
         usleep((100 - v_T4) / 100 * v_max);
         std::cout << "T4: Trilho 9" << std::endl;
-        sprite->setPosition(t4px - trailw / 2, t4py);
+        mutex4.unlock();
 
+        sprite->setPosition(t4px, t4py - trailw / 2);
         usleep((100 - v_T4) / 100 * v_max);
         std::cout << "T4: Trilho 7" << std::endl;
-        sprite->setPosition(t4px, t4py - trailw / 2);
+        mutex3.unlock();
     }
 }
 
